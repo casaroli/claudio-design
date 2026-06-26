@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas</title>
+    <!-- Set the theme before first paint so there is no light/dark flash.
+         Priority: ?theme= param, then the last saved choice, then light.
+         The React ThemeProvider adopts whatever this sets. -->
+    <script>
+      (function () {
+        try {
+          var p = new URLSearchParams(location.search).get('theme')
+          var s = localStorage.getItem('canvas-theme')
+          document.documentElement.setAttribute('data-theme', p || s || 'light')
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light')
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
