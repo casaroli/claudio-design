@@ -8,68 +8,103 @@ is a matter of taste. You watch it happen live in your browser.
 
 ---
 
-## What you need (one-time setup)
+## 1. One-time setup
 
-1. **Node.js 20 or newer.** Check by running `node --version`. If it's older
-   than 20 (or missing), install the latest LTS from https://nodejs.org.
-2. **Claude Code.** This whole thing is meant to be used *through* Claude Code.
-
-That's it. No database, no accounts, no servers to manage.
+1. **Install Node.js 20 or newer.** Check with `node --version`; if it's older
+   than 20 or missing, get the latest LTS from https://nodejs.org.
+2. **Install Claude Code** (the tool you'll talk to):
+   ```bash
+   npm install -g @anthropic-ai/claude-code
+   ```
+3. **Install this project's dependencies.** In a terminal, in this folder:
+   ```bash
+   npm install
+   ```
+   (This also downloads the headless browser Claude uses to screenshot its work.)
 
 ---
 
-## Start it (two steps)
-
-In a terminal, in this folder:
+## 2. Start the live app
 
 ```bash
-npm install      # first time only — downloads everything (a minute or two)
-npm run dev      # starts the live app
+npm run dev
 ```
 
-When it's ready you'll see a local address. Open it in your browser:
+When it's ready, open this in your browser and **leave the tab open**:
 
 > **http://localhost:5173**
 
-Leave that tab open. This is your live canvas — it updates the instant Claude
-changes anything.
-
-What you'll see:
-- **Home** — an overview.
-- **Components** — every building block, shown in every theme.
-- **Screens** — the full pages you've built (empty at first).
-
-Switch the theme any time from the menu in the top-right.
+This is your live canvas — it updates the instant Claude changes anything. You'll
+see **Home**, a **Components** gallery (every building block in every theme), and
+**Screens** (the pages you build — empty at first). Switch themes any time from
+the menu in the top-right.
 
 ---
 
-## Now just talk to Claude Code
+## 3. Run Claude on this repo
 
-Open Claude Code in this folder and ask for what you want, in plain words:
+Open a **second terminal** in this same folder (leave `npm run dev` running in the
+first one) and start Claude Code:
 
-- *"Build me a pricing page with three tiers."*
-- *"Make a warm, editorial theme with a serif heading."*
-- *"On the dashboard, make the numbers bigger and add a chart."*
-- *"Show me the settings page in dark mode on a phone."*
+```bash
+claude
+```
 
-Claude will build it, the page in your browser will update by itself, and Claude
-will show you a screenshot of what it made. When a choice is up to taste —
-a color, a layout — it will stop and **ask you**, with a picture, before going
-on. Just reply in plain language.
+That's it. Claude automatically reads this project's instructions (`CLAUDE.md`),
+so it already knows how to build screens, take screenshots, and check its work.
+Now just type what you want, in plain English, and watch your browser tab.
 
-Tips:
-- Keep the browser tab visible while you work — you'll see changes live.
-- If you don't like something, say so: *"too cramped"*, *"warmer"*,
-  *"make the button stand out more."*
-- You never need to touch the code. If something looks broken, tell Claude and
-  it will fix it.
+The rhythm you'll feel:
+
+> **you ask → Claude builds → your browser updates by itself → Claude shows you a
+> screenshot of what it made → you react → repeat.**
+
+When a choice is a matter of taste (a color, which of two layouts), Claude stops
+and **asks you first**, with a picture. Just reply in plain language.
 
 ---
 
-## Three example pages to look at
+## 4. Things to ask for (copy these, then make them yours)
 
-These ship with the project as a taste of what's possible (and as patterns
-Claude reuses). Open them and try switching themes:
+**Build a screen**
+- "Build me a pricing page with three tiers and a monthly/annual toggle."
+- "Make a login screen with email, password, and a 'sign in with Google' button."
+- "Create a settings page with tabs for Profile, Notifications, and Billing."
+- "Build a simple analytics dashboard with stat cards and a chart."
+- "Make a landing page hero with a headline, subtext, and two buttons."
+
+**Create or change a theme**
+- "Make a warm, editorial theme with a serif heading and cream background."
+- "Give me a high-contrast black-and-white theme with an electric green accent."
+- "Add a soft pastel theme."
+- "In the dark theme, make the accent color more purple."
+
+**Add or explore components**
+- "Add a date picker component and show it in the gallery."
+- "Show me all the buttons in dark mode."
+- "What components are available?"
+- "Add a toast/notification component."
+
+**Tweak what's there**
+- "On the pricing page, make the middle plan stand out more."
+- "The dashboard feels cramped — add more breathing room."
+- "Make the headings bigger and the body text softer."
+- "Show me the settings page on a phone." / "…in the warm theme."
+
+**See it**
+- "Screenshot the dashboard in every theme so I can compare."
+- "Show me what the pricing page looks like on mobile."
+
+Tips: keep the browser visible while you work; react in plain words ("too busy",
+"warmer", "make that pop"); you never need to touch code — if anything looks
+broken, just say so and Claude will fix it.
+
+---
+
+## Three example pages to start from
+
+These ship with the project (and double as patterns Claude reuses). Open them and
+try switching themes:
 
 - http://localhost:5173/screens/pricing
 - http://localhost:5173/screens/settings
@@ -79,35 +114,33 @@ Claude reuses). Open them and try switching themes:
 
 ## Sharing the live app over the internet (optional)
 
-If you're running this on a remote/cloud machine, or want to show someone the
-live page, expose port **5173** with a tunnel (e.g. Cloudflare Tunnel or ngrok):
+Running on a remote/cloud machine, or want to show someone? Expose port **5173**
+with a tunnel (e.g. Cloudflare Tunnel or ngrok):
 
 ```bash
-# example with cloudflared
 cloudflared tunnel --url http://localhost:5173
 ```
 
-It will print a public `https://…` address. For live-updates to keep working
-through the tunnel, start the dev server telling it that public host:
+It prints a public `https://…` address. For live-updates to keep working through
+the tunnel, start the dev server telling it that public host:
 
 ```bash
 HMR_HOST=your-tunnel-host.trycloudflare.com npm run dev
 ```
 
-(Use the host only — no `https://`, no port.) Without this the page still loads,
-but it stops auto-updating. If you're just running locally on your own computer,
-you don't need any of this.
+(Host only — no `https://`, no port.) Without this the page still loads but stops
+auto-updating. Running locally on your own computer? You don't need any of this.
 
 ---
 
 ## If something goes wrong
 
-- **The page won't load.** Make sure `npm run dev` is still running and you're
-  visiting http://localhost:5173.
-- **A new page looks unstyled.** Stop the server (Ctrl-C) and run `npm run dev`
-  again.
-- **Anything else.** Tell Claude Code what you see — describing the problem is
-  enough; it can read the logs and fix it.
+- **The page won't load.** Make sure `npm run dev` is still running in its
+  terminal, and you're visiting http://localhost:5173.
+- **A new page looks unstyled.** Stop the dev server (Ctrl-C) and run
+  `npm run dev` again.
+- **Anything else.** Tell Claude what you see — describing the problem is enough;
+  it can read the logs and fix it.
 
 ---
 
